@@ -50,7 +50,10 @@ $app = builder {
     enable 'Lint';
     enable 'StackTrace';
     if ( @front_proxy ) {
-        enable match_if addr(\@front_proxy), 'ReverseProxy';
+        if ( addr(\@front_proxy) ) {
+            enable 'ReverseProxy';
+            enable 'ReverseProxyPath';
+        }
     }
     if ( @allow_from ) {
         enable match_if addr('!',\@allow_from), sub {
